@@ -1,0 +1,76 @@
+<odoo>
+    <record id="task_report" model="ir.actions.report">
+        <field name="name">Task Report</field>
+        <field name="model">todo.task</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="model_todo_task"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">todo_app.todo_task_report_template</field>
+    </record>
+
+    <template id="todo_task_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="rec">
+                        <!-- Report Title -->
+                        <h2 style="text-align:center;">Task Report</h2>
+
+                        <!-- General Information Table -->
+                        <table class="table table-sm" style="width:100%; margin-bottom: 20px;">
+                            <tr>
+                                <th>Name:</th>
+                                <td><span t-field="rec.name"/></td>
+                                <th>Due Date:</th>
+                                <td><span t-field="rec.due_date"/></td>
+                            </tr>
+                            <tr>
+                                <th>Assigned To:</th>
+                                <td><span t-field="rec.assign_to_id"/></td>
+                                <th>Estimated Time:</th>
+                                <td><span t-field="rec.estimated_time"/></td>
+                            </tr>
+                            <tr>
+                                <th>State:</th>
+                                <td colspan="3"><span t-field="rec.state"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Timesheet Lines Table -->
+                        <h4>Timesheet Entries</h4>
+                        <table class="table table-bordered" style="width:100%; border: 1px solid #ccc;">
+                            <thead style="background-color: #efefef;">
+                                <tr>
+                                    <th style="padding: 6px;">Description</th>
+                                    <th style="padding: 6px;">Date</th>
+                                    <th style="padding: 6px;">Time (H)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="rec.line_ids" t-as="line">
+                                    <tr>
+                                        <td t-esc="line.description" style="padding: 6px;"/>
+                                        <td t-esc="line.date" style="padding: 6px;"/>
+                                        <td t-esc="line.time" style="padding: 6px; text-align: right;"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Total Time Row -->
+                        <div style="text-align: right; font-weight: bold; margin-top: 8px;">
+                            Total Time Taken: <span t-field="rec.formatted_total_time"/>
+                        </div>
+
+                        <div style="page-break-after:always;"></div>
+                    </t>
+
+                    <!-- Pagination Footer -->
+                    <div style="position: absolute; bottom: 0mm; right: 10mm; font-size: 10px; color: #888;">
+                        Page <span class="page"/> of <span class="topage"/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

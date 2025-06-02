@@ -7,7 +7,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/base_menu.xml',
-        'views/todo_task_view.xml'
+        'views/todo_task_view.xml',
+        'reports/task_report.xml'
     ],
     'application': True,
 }
